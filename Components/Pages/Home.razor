@@ -13,8 +13,8 @@
 }
 <Button OnClick="OnSetRows4">Set 4 rows</Button>
 <Button OnClick="OnSetRows8">Set 8 rows</Button>
-<Button OnClick="OnSetRows4Update">Set 4 rows with delay</Button>
-<Button OnClick="OnSetRows8Update">Set 8 rows with delay</Button>
+<Button OnClick="OnSetRows4Delay">Set 4 rows with delay</Button>
+<Button OnClick="OnSetRows8Delay">Set 8 rows with delay</Button>
 
 @code {
 	GridPaging paging = new GridPaging() { Enabled = true, PageSize = 5 };
@@ -60,7 +60,7 @@
 		}
 	}
 
-	private async Task OnSetRows4Update()
+	private async Task OnSetRows4Delay()
 	{
 		if (Grid != null)
 		{
@@ -72,7 +72,7 @@
 		}
 	}
 
-	private async Task OnSetRows8Update()
+	private async Task OnSetRows8Delay()
 	{
 		if (Grid != null)
 		{
