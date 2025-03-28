@@ -1,0 +1,102 @@
+﻿@page "/"
+
+<PageTitle>This is an example for the Grid Bug</PageTitle>
+
+@if (DataSource != null)
+{
+	<Grid @ref="Grid" Paging=paging Pager=pager DataSource="DataSource">
+		<Columns>
+			<Column DataField="RandomString" Label="Random String"></Column>
+			<Column DataField="RandomNumber" Label="Random Number" DataType="number" Align="HorizontalAlignment.Right" CellsAlign="HorizontalAlignment.Right" Width="250"></Column>
+		</Columns>
+	</Grid>
+}
+<Button OnClick="OnSetRows4">Set 4 rows</Button>
+<Button OnClick="OnSetRows8">Set 8 rows</Button>
+<Button OnClick="OnSetRows4Update">Set 4 rows with delay</Button>
+<Button OnClick="OnSetRows8Update">Set 8 rows with delay</Button>
+
+@code {
+	GridPaging paging = new GridPaging() { Enabled = true, PageSize = 5 };
+	GridPager pager = new()
+		{
+			Visible = true,
+			PageIndexSelectors = new GridPagerPageIndexSelectors() { DataSource = 3 },
+			NavigationInput = new GridPagerNavigationInput() { Visible = true, Position = Position.Far },
+			Summary = new GridPagerSummary() { Position = Position.Far, Visible = true }
+		};
+
+	private Grid? Grid { get; set; }
+	private List<RandomData>? DataSource { get; set; } = null;
+
+	class RandomData
+	{
+		public string RandomString { get; set; } = default!;
+		public int RandomNumber { get; set; }
+	}
+
+	protected override void OnInitialized()
+	{
+		DataSource = GenerateData(8);
+	}
+
+	private void OnSetRows4()
+	{
+		if (Grid != null)
+		{
+			Grid.BeginUpdate();
+			DataSource = GenerateData(4);
+			Grid.EndUpdate(true);
+		}
+	}
+
+	private void OnSetRows8()
+	{
+		if (Grid != null)
+		{
+			Grid.BeginUpdate();
+			DataSource = GenerateData(8);
+			Grid.EndUpdate(true);
+		}
+	}
+
+	private async Task OnSetRows4Update()
+	{
+		if (Grid != null)
+		{
+			Grid.BeginUpdate();
+			DataSource = GenerateData(4);
+			// Do other stuff
+			await Task.Delay(100);
+			Grid.EndUpdate(true);
+		}
+	}
+
+	private async Task OnSetRows8Update()
+	{
+		if (Grid != null)
+		{
+			Grid.BeginUpdate();
+			DataSource = GenerateData(8);
+			// Do other stuff
+			await Task.Delay(100);
+			Grid.EndUpdate(true);
+		}
+	}
+
+	private List<RandomData> GenerateData(int nRows)
+	{
+		List<RandomData> resultList = new List<RandomData>();
+		Random rnd = new Random();
+
+		for (int i = 0; i < nRows; i++)
+		{
+			resultList.Add(new RandomData()
+			{
+				RandomString = Guid.NewGuid().ToString(),
+				RandomNumber = rnd.Next(1, 9999)
+			});
+		}
+		return resultList;
+	}
+}
